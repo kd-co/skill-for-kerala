@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <form action="" method="post">
+	    <div class="field">
+	        {{ userform.first_name.errors }}
+	        <label for="id_first_name">First name: </label>
+	        {{ userform.first_name }}
+	    </div>
+	    <div class="field">
+	        {{ userform.last_name.errors }}
+	        <label for="id_last_name">Last name: </label>
+	        {{ userform.last_name }}
+	    </div>
+	    <div class="field">
+	        {{ userform.email.errors }}
+	        <label for="id_email">Email: </label>
+	        {{ userform.email }}
+	    </div>
+	    <div class="field">
+	        {{ userform.username.errors }}
+	        <label for="id_username">Username: </label>
+	        {{ userform.username }}
+	    </div>
+	    <div class="field">
+	        {{ userform.password.errors }}
+	        <label for="id_password1">Password: </label>
+	        {{ userform.password }}
+	    </div>
+	    <div class="field">
+	        {{ userprofileform.skill.errors }}
+	        <label for="id_address">Skill: </label>
+	        {{ userprofileform.skill }}
+	    </div>
+	    <div class="field">
+	        {{ userprofileform.location.errors }}
+	        <label for="id_city">Location: </label>
+	        {{ userprofileform.location }}
+	    </div>
+	    <div class="field">
+	        {{ userprofileform.bio.errors }}
+	        <label for="id_post">Bio: </label>
+	        {{ userprofileform.bio }}
+	    </div>
+	    {% csrf_token %}
+	    <input type="submit" value="Submit">
+	</form>
+</body>
+</html>

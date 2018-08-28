@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Skill For Kerala</title>
+</head>
+<body>
+	<h1>Skill For Kerala</h1>
+	{{user.is_authenticated}}
+	{% if user.is_authenticated %}
+    <p>hello</p>
+    <p>Welcome back {{ user.first_name }}</p>
+    <p><a href="/logout/">Logout</a></p>
+    {% else %}
+    <p><a href="/login/">Login</a></p>
+    <p><a href="/register/">Register</a></p>
+    {% endif %}
+
+    {% for profile in profiles %}
+         <div style="margin-top: 30px; margin-bottom: 30px;">
+             <h4>{{profile.user.first_name}} {{profile.user.last_name}}, {{profile.user.username}}</h4>
+             <p>{{profile.bio}}</p>
+         </div>
+    {% endfor %}
+</body>
+</html>
