@@ -1,5 +1,12 @@
 {
   "name": "skills_for_kerala",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@rails/webpacker": "3.5",
+    "caniuse-lite": "1",
+    "webpack": "3"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "2.11.2"
+  }
 }
