@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  def static
+  def angular
     render 'layouts/angular'
   end
 end
