@@ -1,24 +1,14 @@
-# README
+# Skill For Kerala
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+App to donate your skills to help rebuild kerala
 
-Things you may want to cover:
+## Running The App
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1) Check out the frontend application (https://github.com/kd-co/skillforkerala-frontend)
+2) Install dependencies with `npm install`
+3) Launch the frontend app as follows
+```shell
+node_modules/.bin/ng build --base-href=/x/ --deploy-url=/x/
+```
+4) Install dependencies with `bundle install`
+5) Run the app with `rails s`
