@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
   def static
-    render html: "hello", layout: true
+    render 'layouts/angular'
   end
 end

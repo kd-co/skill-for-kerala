@@ -4,19 +4,10 @@
     <title>SkillsForKerala</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_pack_tag 'application', media: 'all' %>
-    <%= javascript_pack_tag 'application' %>
+    <base href="/x/" />
   </head>
 
   <body>
-    <fb:login-button
-      scope="public_profile,email"
-      onlogin="onFacebookLogin();">
-    </fb:login-button>
-
-    <%= link_to "Click", user_facebook_omniauth_authorize_path %>
-
     <%= yield %>
 
     <%= render "layouts/facebook" %>
