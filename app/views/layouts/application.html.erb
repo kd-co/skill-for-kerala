@@ -15,10 +15,10 @@
       onlogin="onFacebookLogin();">
     </fb:login-button>
 
+    <%= link_to "Click", user_facebook_omniauth_authorize_path %>
+
     <%= yield %>
 
-    <script>
-      loadFacebookSDK('<%= Rails.application.credentials.facebook[:app_id] %>')
-    </script>
+    <%= render "layouts/facebook" %>
   </body>
 </html>
