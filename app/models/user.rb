@@ -13,4 +13,12 @@ class User < ApplicationRecord
       user.image = auth.info.image
     end
   end
+
+  def name
+    [first_name, last_name].join(' ')
+  end
+
+  def name=(name)
+    self.first_name, self.last_name = name.split(' ')
+  end
 end
