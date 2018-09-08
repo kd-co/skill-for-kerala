@@ -1,6 +1,11 @@
 class User < ApplicationRecord
-  has_many :skills, class_name: :UserSkill
-  has_one :profile
+  has_many :skills, class_name: :UserSkill, dependent: :destroy
+  has_one :profile, dependent: :destroy
+
+  accepts_nested_attributes_for :skills,
+    :reject_if => :all_blank,
+    :allow_destroy => true
+  accepts_nested_attributes_for :profile
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

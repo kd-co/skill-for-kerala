@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
-  before_action :set_profile
+  before_action :set_profile, except: [:create]
+
   api :GET, '/profiles'
   param :key, String, desc: "optional filter search", required: false
   def index
@@ -22,12 +23,23 @@ class ProfilesController < ApplicationController
   param :id, :number, desc: "optional filter search", required: false
   def update
     authorize @profile
-    @profile.update(profile_params)
+    @user = @profile.user
+    @user.update(profile_params)
   end
 
+  api :POST, '/profiles/'
+  param :user, Hash do
+    param :first_name, String
+    param :last_name, String
+    param :email, String
+    param :image, String
+    param :profile_attributes, [:location, :bio]
+    param :skills_attributes, [:id, :skill, :_destroy]
+  end
   def create
     @profile = current_user.profile ? current_user.profile : current_user.build_profile
-    @profile.update(profile_params)
+    @user = @profile.user
+    @user.update(profile_params)
   end
 
   private
@@ -40,11 +52,9 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def update_profile(params)
-    @profile.update(profile_params)
-  end
-
   def profile_params
-    params.permit(:location, :bio)
+    params.require(:user).permit(:first_name, :last_name, :email, :image,
+      skills_attributes: [:id, :skill, :_destroy],
+      profile_attributes: [:location, :bio])
   end
 end
