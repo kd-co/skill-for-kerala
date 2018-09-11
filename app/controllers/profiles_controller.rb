@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :set_profile, except: [:create]
+  skip_before_action :verify_authenticity_token, only: [:index]
 
   api :GET, '/profiles'
   param :key, String, desc: "optional filter search", required: false
@@ -15,12 +16,25 @@ class ProfilesController < ApplicationController
   end
 
   api :GET, '/profiles/:id'
-  param :id, :number, desc: "optional filter search", required: false
+  param :id, :number, required: true
   def show
   end
 
   api :PUT, '/profiles/:id'
   param :id, :number, desc: "optional filter search", required: false
+  param :user, Hash, required: true do
+    param :first_name, String
+    param :last_name, String
+    param :email, String
+    param :image, String
+    param :available, [true, false]
+    param :profile_attributes, Hash, desc: 'profile data' do
+      param :location, String
+      param :bio, String
+      param :available_hours, Float
+    end
+    param :skills_attributes, [:id, :skill, :_destroy]
+  end
   def update
     authorize @profile
     @user = @profile.user
@@ -28,18 +42,30 @@ class ProfilesController < ApplicationController
   end
 
   api :POST, '/profiles/'
-  param :user, Hash do
+  param :user, Hash, required: true do
     param :first_name, String
     param :last_name, String
     param :email, String
     param :image, String
-    param :profile_attributes, [:location, :bio]
+    param :available, [true, false]
+    param :profile_attributes, Hash, desc: 'profile data' do
+      param :location, String
+      param :bio, String
+      param :available_hours, Float
+    end
     param :skills_attributes, [:id, :skill, :_destroy]
   end
   def create
     @profile = current_user.profile ? current_user.profile : current_user.build_profile
     @user = @profile.user
     @user.update(profile_params)
+  end
+
+  api :PUT, '/profiles/:id/approve'
+  param :id, :number, required: true
+  def approve
+    authorize @profile
+    @errors = @profile.user.approved!
   end
 
   private
@@ -53,8 +79,8 @@ class ProfilesController < ApplicationController
   end
 
   def profile_params
-    params.require(:user).permit(:first_name, :last_name, :email, :image,
+    params.require(:user).permit(:first_name, :last_name, :email, :image, :available,
       skills_attributes: [:id, :skill, :_destroy],
-      profile_attributes: [:location, :bio])
+      profile_attributes: [:location, :bio, :available_hours])
   end
 end

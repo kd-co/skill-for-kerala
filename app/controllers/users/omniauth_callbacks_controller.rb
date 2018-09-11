@@ -4,7 +4,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   %w(facebook google_oauth2).each do |provider|
     define_method "#{provider}" do
-      user = User.from_omniauth(request.env["omniauth.auth"])
+      user = User.from_omniauth(request.env["omniauth.auth"], env['omniauth.params'])
       user.save()
       sign_in user if user.persisted?
 

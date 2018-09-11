@@ -4,4 +4,5 @@ json.skills do
 end
 json.location user.profile.try(:location)
 json.bio user.profile.try(:bio)
+json.available_hours user.profile.try(:available_hours)
 json.profile_id user.profile.try(:id)

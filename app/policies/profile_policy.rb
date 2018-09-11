@@ -7,6 +7,10 @@ class ProfilePolicy
   end
 
   def update?
-    user.profile and user.profile == profile
+    user and ((user.profile and user.profile == profile) or user.super_admin?)
+  end
+
+  def approve?
+    user and user.super_admin?
   end
 end
