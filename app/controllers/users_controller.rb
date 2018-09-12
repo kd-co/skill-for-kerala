@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:contact]
-
   def create
     user = User.new(user_params)
     if user.save
