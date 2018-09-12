@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       put 'approve'
     end
   end
-  resources :profiles, only: [:create]
+  resources :projects, only: [:create, :index]
   devise_for :users, controllers: {omniauth_callbacks: "users/omniauth_callbacks"}
 
   root to: redirect('/x')

@@ -12,6 +12,13 @@ class ProjectsController < ApplicationController
     @project.save()
   end
 
+  api :GET, '/projects/'
+  def index
+    @projects = Project.all()
+  end
+
+  private
+
   def project_params
     params.require(:project).permit(:owner_email, :owner_name, :amount, :description)
   end

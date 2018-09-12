@@ -1,6 +1,8 @@
 class User < ApplicationRecord
+  include ThreadUtility
   has_many :skills, class_name: :UserSkill, dependent: :destroy
   has_one :profile, dependent: :destroy
+  has_many :projects, dependent: :destroy
   enum role: %w(client employee super_admin)
 
   accepts_nested_attributes_for :skills,
@@ -36,7 +38,9 @@ class User < ApplicationRecord
     errors = []
     self.approved = true
     if self.save
-      UserMailer.send_approval(self)
+      thread do
+        UserMailer.send_approval(self)
+      end
     else
       errors = self.errors.messages
     end
@@ -44,6 +48,8 @@ class User < ApplicationRecord
   end
 
   def contact!(client)
-    UserMailer.send_contact_request(self, client)
+    thread do
+      UserMailer.send_contact_request(self, client)
+    end
   end
 end
