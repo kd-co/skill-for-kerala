@@ -13,4 +13,9 @@ class ApplicationController < ActionController::Base
       policy: policy_name
     }
   end
+
+  def authenticate_admin_user!
+    authenticate_user!
+    raise unless current_user.super_admin?
+  end
 end

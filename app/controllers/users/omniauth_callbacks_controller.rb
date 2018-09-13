@@ -1,11 +1,10 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   respond_to :html, :json
 
-
-  %w(facebook google_oauth2).each do |provider|
-    define_method "#{provider}" do
-      user = User.from_omniauth(request.env["omniauth.auth"], env['omniauth.params'])
-      user.save()
+  %w[facebook google_oauth2].each do |provider|
+    define_method provider.to_s do
+      user = User.from_omniauth(request.env["omniauth.auth"], request.env['omniauth.params'])
+      user.save
       sign_in user if user.persisted?
 
       respond_to do |format|
