@@ -1,4 +1,4 @@
-if @error or not @profile
+if @error || !@profile
   json.status 404
 else
   json.status 200

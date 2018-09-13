@@ -7,14 +7,14 @@ class ProjectsController < ApplicationController
     param :description, String
   end
   def create
-    @project =Project.new(project_params)
+    @project = Project.new(project_params)
     @project.user = current_user
-    @project.save()
+    @project.save
   end
 
   api :GET, '/projects/'
   def index
-    @projects = Project.all()
+    @projects = Project.all
   end
 
   private

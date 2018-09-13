@@ -11,13 +11,11 @@ class UsersController < ApplicationController
   api :PUT, '/users/:id/contact'
   param :id, :number, required: true
   def contact
-    begin
-      @user = User.find_by_id(params[:id])
-      authorize @user
-      @user.contact!
-    rescue ActiveRecord::RecordNotFound
-      @error = "Record Not found"
-    end
+    @user = User.find_by_id(params[:id])
+    authorize @user
+    @user.contact!
+  rescue ActiveRecord::RecordNotFound
+    @error = 'Record Not found'
   end
 
   private

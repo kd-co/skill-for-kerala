@@ -3,25 +3,25 @@ class ProfilesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:index]
 
   api :GET, '/profiles'
-  param :key, String, desc: "optional filter search", required: false
+  param :key, String, desc: 'optional filter search', required: false
   def index
     filter = params[:key]
-    if filter
-      @users = User.includes(:profile, :skills).where(
-        'skill ILIKE ? or bio ILIKE ? or location ILIKE ? or first_name ILIKE ? and approved = ?',
-        "%#{filter}%", "%#{filter}%", "%#{filter}%", "%#{filter}%", true).references(:skills, :profile)
-    else
-      @users = User.includes(:profile, :skills).where('approved = ?', false)
-    end
+    @users = if filter
+               User.includes(:profile, :skills).where(
+                 'skill ILIKE ? or bio ILIKE ? or location ILIKE ? or first_name ILIKE ? and approved = ?',
+                 "%#{filter}%", "%#{filter}%", "%#{filter}%", "%#{filter}%", true
+               ).references(:skills, :profile)
+             else
+               User.includes(:profile, :skills).where('approved = ?', false)
+             end
   end
 
   api :GET, '/profiles/:id'
   param :id, :number, required: true
-  def show
-  end
+  def show; end
 
   api :PUT, '/profiles/:id'
-  param :id, :number, desc: "optional filter search", required: false
+  param :id, :number, desc: 'optional filter search', required: false
   param :user, Hash, required: true do
     param :first_name, String
     param :last_name, String
@@ -33,7 +33,7 @@ class ProfilesController < ApplicationController
       param :bio, String
       param :available_hours, Float
     end
-    param :skills_attributes, [:id, :skill, :_destroy]
+    param :skills_attributes, %i[id skill _destroy]
   end
   def update
     authorize @profile
@@ -53,10 +53,10 @@ class ProfilesController < ApplicationController
       param :bio, String
       param :available_hours, Float
     end
-    param :skills_attributes, [:id, :skill, :_destroy]
+    param :skills_attributes, %i[id skill _destroy]
   end
   def create
-    @profile = current_user.profile ? current_user.profile : current_user.build_profile
+    @profile = current_user.profile || current_user.build_profile
     @user = @profile.user
     @user.update(profile_params)
   end
@@ -71,16 +71,14 @@ class ProfilesController < ApplicationController
   private
 
   def set_profile
-    begin
-      @profile = Profile.find_by_id(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      @error = "Record Not found"
-    end
+    @profile = Profile.find_by_id(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    @error = 'Record Not found'
   end
 
   def profile_params
     params.require(:user).permit(:first_name, :last_name, :email, :image, :available,
-      skills_attributes: [:id, :skill, :_destroy],
-      profile_attributes: [:location, :bio, :available_hours])
+                                 skills_attributes: %i[id skill _destroy],
+                                 profile_attributes: %i[location bio available_hours])
   end
 end

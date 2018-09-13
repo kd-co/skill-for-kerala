@@ -7,6 +7,6 @@ class UserPolicy
   end
 
   def contact?
-    user and user.client? and instance.employee?
+    user&.client? && instance.employee?
   end
 end

@@ -6,11 +6,9 @@ module ThreadUtility
   end
 
   def db(&block)
-    begin
-      yield block
-    ensure
-      # Check the connection back in to the connection pool
-      ActiveRecord::Base.connection.close if ActiveRecord::Base.connection
-    end
+    yield block
+  ensure
+    # Check the connection back in to the connection pool
+    ActiveRecord::Base.connection&.close
   end
 end
